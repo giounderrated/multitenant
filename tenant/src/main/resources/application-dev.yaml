@@ -1,0 +1,24 @@
+server:
+  port: 8080
+spring:
+  application:
+    name: tenant
+  datasource:
+    url: jdbc:postgresql://localhost:5432/mocking?currentSchema=master
+    name: master
+    username: postgres
+    password: Ghaexer610
+    hikari:
+      maximum-pool-size: 90
+      minimum-idle: 90
+  jpa:
+    hibernate:
+      ddl-auto: create
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+        format_sql: true
+    show-sql: true
+  flyway:
+    enabled: true
+    locations: classpath:db/migrations
