@@ -9,7 +9,9 @@ import javax.sql.DataSource;
 import java.util.Map;
 
 @Component
-public class DataSourceBasedMultitenantConnectionProvider extends AbstractDataSourceBasedMultiTenantConnectionProviderImpl implements HibernatePropertiesCustomizer {
+public class DataSourceBasedMultitenantConnectionProvider
+        extends AbstractDataSourceBasedMultiTenantConnectionProviderImpl
+        implements HibernatePropertiesCustomizer {
 
     private final Map<String, DataSource> dataSourceMap;
 
@@ -17,15 +19,14 @@ public class DataSourceBasedMultitenantConnectionProvider extends AbstractDataSo
         this.dataSourceMap = dataSourceMap;
     }
 
-
     @Override
     protected DataSource selectAnyDataSource() {
-        return dataSourceMap.get("master");
+        return this.dataSourceMap.values().iterator().next();
     }
 
     @Override
     protected DataSource selectDataSource(String domain) {
-        return dataSourceMap.get(domain);
+        return this.dataSourceMap.get(domain);
     }
 
     @Override

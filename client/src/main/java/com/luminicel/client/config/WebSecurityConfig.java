@@ -1,4 +1,4 @@
-package com.luminicel.client;
+package com.luminicel.client.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

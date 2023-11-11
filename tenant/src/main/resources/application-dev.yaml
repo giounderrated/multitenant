@@ -13,7 +13,7 @@ spring:
       minimum-idle: 90
   jpa:
     hibernate:
-      ddl-auto: create
+      ddl-auto: update
     properties:
       hibernate:
         dialect: org.hibernate.dialect.PostgreSQLDialect
@@ -22,3 +22,4 @@ spring:
   flyway:
     enabled: true
     locations: classpath:db/migrations
+

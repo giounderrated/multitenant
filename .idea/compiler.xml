@@ -11,5 +11,8 @@
         <module name="tenant" />
       </profile>
     </annotationProcessing>
+    <bytecodeTargetLevel>
+      <module name="rest-clients" target="17" />
+    </bytecodeTargetLevel>
   </component>
 </project>

@@ -6,8 +6,16 @@ import org.springframework.boot.autoconfigure.flyway.FlywayMigrationStrategy;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
+import javax.sql.DataSource;
+
 @Configuration
 public class FlywayConfig {
+    private final DataSource dataSource;
+
+    public FlywayConfig(DataSource dataSource) {
+        this.dataSource = dataSource;
+    }
+
     @Bean
     public FlywayMigrationStrategy flywayMigrationStrategy() {
         return flyway -> {
@@ -15,13 +23,14 @@ public class FlywayConfig {
         };
     }
 
-//    @Bean
-//    public Flyway flyway() {
-//        Flyway flyway = new Flyway();
-//        flyway.setDataSource(dataSource);
-//        flyway.setLocations("filesystem:/migrations");
-//        flyway.setSchemas("my_schema");
-//        return flyway;
-//    }
+    @Bean
+    public Flyway flyway() {
+        Flyway flyway = Flyway.configure()
+                .locations("db/migrations/default")
+                .dataSource(dataSource)
+                .schemas("MASTER")
+                .load();
+        return flyway;
+    }
 
 }
