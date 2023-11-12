@@ -16,6 +16,11 @@ public class TenantService {
         Flyway fly = Flyway.configure()
                 .configuration(flyway.getConfiguration())
                 .locations("db/migrations")
+                .dataSource(
+                        config.getDatabaseUrl(),
+                        config.getDatabaseUsername(),
+                        config.getDatabasePassword()
+                )
                 .schemas(config.getTenantDomain())
                 .defaultSchema(config.getTenantDomain())
                 .load();

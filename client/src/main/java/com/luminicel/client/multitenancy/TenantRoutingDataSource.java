@@ -55,6 +55,7 @@ public class TenantRoutingDataSource extends AbstractRoutingDataSource {
         hikariConfig.setJdbcUrl(config.databaseUrl());
         hikariConfig.setUsername(config.databaseUsername());
         hikariConfig.setPassword(config.databasePassword());
+        hikariConfig.setSchema(config.tenantDomain());
         hikariConfig.setKeepaliveTime(40000);
         hikariConfig.setMinimumIdle(1);
         hikariConfig.setMaxLifetime(45000);

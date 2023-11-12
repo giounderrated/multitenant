@@ -26,6 +26,7 @@ public class DataSourceConfig {
     private String databaseUrl;
     private String databaseUsername;
     private String databasePassword;
+    private String schema;
     private Long tenantId;
     private String tenantDomain;
 }

@@ -46,19 +46,14 @@ public class BaseController {
                 .tenantDomain(tenant.getDomain())
                 .databaseUsername("postgres")
                 .databasePassword("Ghaexer610")
+                .schema(tenant.getDomain())
 //                .databaseUrl("jdbc:postgresql://localhost:5432/" + domain + "?useSSL=false")
                  .databaseUrl("jdbc:postgresql://localhost:5432/" + tenant.getDomain())
                 .build();
         dataSourceRepository.save(dataSourceConfig);
 
         tenantService.createDatabase(dataSourceConfig);
-//        Flyway fly = Flyway.configure()
-//                .configuration(flyway.getConfiguration())
-//                .schemas(tenant.getDomain())
-//                .defaultSchema(tenant.getDomain())
-//                .load();
-//
-//        fly.migrate();
+
 
         return new ResponseEntity<>("success", HttpStatus.OK);
 
