@@ -2,6 +2,7 @@ package com.luminicel.client.multitenancy;
 
 import com.zaxxer.hikari.HikariConfig;
 import com.zaxxer.hikari.HikariDataSource;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
@@ -18,6 +19,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 @Component
+@Slf4j
 public class TenantRoutingDataSource extends AbstractRoutingDataSource {
 
     private final TenantIdentifierResolver tenantIdentifierResolver;
@@ -37,10 +39,10 @@ public class TenantRoutingDataSource extends AbstractRoutingDataSource {
         DataSourceConfig[] dataSourceConfigs = response.getBody();
 
         Map<Object,Object> targetDataSources = new HashMap<>();
-
+        System.out.println("Getting Datasources");
         for (DataSourceConfig dataSourceConfig : dataSourceConfigs) {
             DataSource dataSource = createDataSource(dataSourceConfig);
-            System.out.println(dataSourceConfig.tenantId());
+            log.info(dataSourceConfig.toString());
             targetDataSources.put(dataSourceConfig.tenantDomain(), dataSource);
         }
         setTargetDataSources(targetDataSources);
