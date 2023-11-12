@@ -3,6 +3,7 @@ package com.luminicel.client.multitenancy;
 import com.zaxxer.hikari.HikariConfig;
 import com.zaxxer.hikari.HikariDataSource;
 import jakarta.persistence.EntityManagerFactory;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.autoconfigure.orm.jpa.JpaProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -23,6 +24,7 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 
 @Configuration
+@Slf4j
 public class DataSourceConfiguration {
 
     private static final String DATASOURCE_ENDPOINT = "http://localhost:8080/api/v1/management";
@@ -34,8 +36,8 @@ public class DataSourceConfiguration {
         this.jpaProperties = jpaProperties;
     }
 
-    @Primary
     @Bean
+    @Primary
     public Map<String, DataSource> dataSources() {
         HttpHeaders headers = new HttpHeaders();
 
@@ -44,10 +46,11 @@ public class DataSourceConfiguration {
                         DATASOURCE_ENDPOINT, HttpMethod.GET, new HttpEntity<>(headers),
                         DataSourceConfig[].class);
 
+        log.info(response.getBody().toString());
+
         DataSourceConfig[] dataSourceConfigs = response.getBody();
 
         Map<String, DataSource> result = new HashMap<>();
-
         for (DataSourceConfig dataSourceConfig : dataSourceConfigs) {
             DataSource dataSource = createDataSource(dataSourceConfig);
             System.out.println(dataSourceConfig.tenantId());

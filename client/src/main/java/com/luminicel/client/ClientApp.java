@@ -5,7 +5,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 
 @SpringBootApplication
-@EnableJpaRepositories("com.luminicel")
+@EnableJpaRepositories("com.luminicel.client")
 public class ClientApp {
     public static void main(String[] args) {
         SpringApplication.run(ClientApp.class);
