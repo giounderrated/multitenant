@@ -31,26 +31,26 @@ public class TenantRoutingDataSource extends AbstractRoutingDataSource {
         this.restTemplate = restTemplate;
         HttpHeaders headers = new HttpHeaders();
 
-        ResponseEntity<DataSourceConfig[]> response =
+        ResponseEntity<DataSourceDetails[]> response =
                 restTemplate.exchange(
                         DATASOURCE_ENDPOINT, HttpMethod.GET, new HttpEntity<>(headers),
-                        DataSourceConfig[].class);
+                        DataSourceDetails[].class);
 
-        DataSourceConfig[] dataSourceConfigs = response.getBody();
+        DataSourceDetails[] dataSourceDetails = response.getBody();
 
         Map<Object,Object> targetDataSources = new HashMap<>();
         System.out.println("Getting Datasources");
-        for (DataSourceConfig dataSourceConfig : dataSourceConfigs) {
-            DataSource dataSource = createDataSource(dataSourceConfig);
-            log.info(dataSourceConfig.toString());
-            targetDataSources.put(dataSourceConfig.tenantDomain(), dataSource);
+        for (DataSourceDetails dataSourceDetails : dataSourceDetails) {
+            DataSource dataSource = createDataSource(dataSourceDetails);
+            log.info(dataSourceDetails.toString());
+            targetDataSources.put(dataSourceDetails.tenantDomain(), dataSource);
         }
         setTargetDataSources(targetDataSources);
         setDefaultTargetDataSource(createMasterDataSource());
 
     }
 
-     private DataSource createDataSource(final DataSourceConfig config) {
+     private DataSource createDataSource(final DataSourceDetails config) {
         HikariConfig hikariConfig = new HikariConfig();
         hikariConfig.setJdbcUrl(config.databaseUrl());
         hikariConfig.setUsername(config.databaseUsername());

@@ -1,4 +1,4 @@
-package com.luminicel.tenant.tenant.domain;
+package com.luminicel.tenant.shard.domain;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -12,7 +12,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity(name = "datasource")
-public class DataSourceConfig {
+public class DataSourceDetails {
     @Id
     @SequenceGenerator(
             name = "datasource_id_sequence",

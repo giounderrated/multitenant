@@ -1,4 +1,4 @@
-package com.luminicel.tenant.tenant.domain;
+package com.luminicel.tenant.tenant.domain.model;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -24,7 +24,10 @@ public class Tenant{
     )
     private Long id;
     private String domain;
-    private String email;
-    private String firstname;
-
+    private String phone;
+    private String dialCode;
+    private String billingInfo;
+    private Status status;
+    private String address;
+    private Long user_id;
 }
