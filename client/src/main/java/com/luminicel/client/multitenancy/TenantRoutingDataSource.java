@@ -23,7 +23,7 @@ import java.util.Map;
 public class TenantRoutingDataSource extends AbstractRoutingDataSource {
 
     private final TenantIdentifierResolver tenantIdentifierResolver;
-    private static final String DATASOURCE_ENDPOINT = "http://localhost:8080/api/v1/management";
+    private static final String DATASOURCE_ENDPOINT = "http://localhost:8080/api/v1/datasources";
     private final RestTemplate restTemplate;
 
     public TenantRoutingDataSource(TenantIdentifierResolver tenantIdentifierResolver, RestTemplate restTemplate) {
@@ -40,10 +40,10 @@ public class TenantRoutingDataSource extends AbstractRoutingDataSource {
 
         Map<Object,Object> targetDataSources = new HashMap<>();
         System.out.println("Getting Datasources");
-        for (DataSourceDetails dataSourceDetails : dataSourceDetails) {
-            DataSource dataSource = createDataSource(dataSourceDetails);
+        for (DataSourceDetails dataSourceDetail : dataSourceDetails) {
+            DataSource dataSource = createDataSource(dataSourceDetail);
             log.info(dataSourceDetails.toString());
-            targetDataSources.put(dataSourceDetails.tenantDomain(), dataSource);
+            targetDataSources.put(dataSourceDetail.tenantDomain(), dataSource);
         }
         setTargetDataSources(targetDataSources);
         setDefaultTargetDataSource(createMasterDataSource());
