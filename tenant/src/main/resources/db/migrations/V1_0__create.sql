@@ -4,3 +4,4 @@ CREATE TABLE student (
 	firstname varchar(255) NULL,
 	CONSTRAINT student_pkey PRIMARY KEY (id)
 );
+

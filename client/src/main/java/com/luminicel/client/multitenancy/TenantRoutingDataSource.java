@@ -80,7 +80,6 @@ public class TenantRoutingDataSource extends AbstractRoutingDataSource {
         return tenantIdentifierResolver.resolveCurrentTenantIdentifier();
     }
 
-
     @Override
     public ConnectionBuilder createConnectionBuilder() throws SQLException {
         return super.createConnectionBuilder();
