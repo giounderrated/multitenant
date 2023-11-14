@@ -3,6 +3,8 @@ package com.luminicel.client.multitenancy;
 import com.zaxxer.hikari.HikariConfig;
 import com.zaxxer.hikari.HikariDataSource;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.cloud.context.config.annotation.RefreshScope;
+import org.springframework.context.annotation.Bean;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
@@ -20,29 +22,24 @@ import java.util.Map;
 
 @Component
 @Slf4j
+@RefreshScope
 public class TenantRoutingDataSource extends AbstractRoutingDataSource {
 
     private final TenantIdentifierResolver tenantIdentifierResolver;
     private static final String DATASOURCE_ENDPOINT = "http://localhost:8080/api/v1/datasources";
     private final RestTemplate restTemplate;
 
+    private Map<Object, Object> targetDataSources = new HashMap<>();
+
     public TenantRoutingDataSource(TenantIdentifierResolver tenantIdentifierResolver, RestTemplate restTemplate) {
+
         this.tenantIdentifierResolver = tenantIdentifierResolver;
         this.restTemplate = restTemplate;
-        HttpHeaders headers = new HttpHeaders();
 
-        ResponseEntity<DataSourceDetails[]> response =
-                restTemplate.exchange(
-                        DATASOURCE_ENDPOINT, HttpMethod.GET, new HttpEntity<>(headers),
-                        DataSourceDetails[].class);
+        final DataSourceDetails[] dataSourceDetails = getDataSourceDetails();
 
-        DataSourceDetails[] dataSourceDetails = response.getBody();
-
-        Map<Object,Object> targetDataSources = new HashMap<>();
-        System.out.println("Getting Datasources");
         for (DataSourceDetails dataSourceDetail : dataSourceDetails) {
             DataSource dataSource = createDataSource(dataSourceDetail);
-            log.info(dataSourceDetails.toString());
             targetDataSources.put(dataSourceDetail.tenantDomain(), dataSource);
         }
         setTargetDataSources(targetDataSources);
@@ -50,28 +47,47 @@ public class TenantRoutingDataSource extends AbstractRoutingDataSource {
 
     }
 
-     private DataSource createDataSource(final DataSourceDetails config) {
+    private DataSourceDetails[] getDataSourceDetails() {
+        final HttpHeaders headers = new HttpHeaders();
+
+        final ResponseEntity<DataSourceDetails[]> response =
+                restTemplate.exchange(
+                        DATASOURCE_ENDPOINT, HttpMethod.GET, new HttpEntity<>(headers),
+                        DataSourceDetails[].class);
+        final DataSourceDetails[] dataSourceDetails = response.getBody();
+        return dataSourceDetails;
+    }
+
+//    public void addDataSource(final DataSourceDetails details) {
+//        final DataSource newDataSource = createDataSource(details);
+//        targetDataSources.put(details.tenantDomain(), newDataSource);
+//        this.setTargetDataSources(targetDataSources);
+//        printAllDataSources();
+//    }
+
+//    private void printAllDataSources() {
+//        for (Map.Entry<Object, Object> entry : targetDataSources.entrySet()) {
+//            System.out.println(entry.getKey() + ": " + entry.getValue());
+//        }
+//    }
+
+    private DataSource createDataSource(final DataSourceDetails config) {
         HikariConfig hikariConfig = new HikariConfig();
         hikariConfig.setJdbcUrl(config.databaseUrl());
         hikariConfig.setUsername(config.databaseUsername());
         hikariConfig.setPassword(config.databasePassword());
-        hikariConfig.setSchema(config.tenantDomain());
-        hikariConfig.setKeepaliveTime(40000);
-        hikariConfig.setMinimumIdle(1);
-        hikariConfig.setMaxLifetime(45000);
-        hikariConfig.setIdleTimeout(35000);
+        hikariConfig.setSchema(config.schema());
+        hikariConfig.setMaximumPoolSize(4);
         return new HikariDataSource(hikariConfig);
     }
 
-     private DataSource createMasterDataSource() {
+    private DataSource createMasterDataSource() {
         HikariConfig hikariConfig = new HikariConfig();
         hikariConfig.setJdbcUrl("jdbc:postgresql://localhost:5432/mocking");
+        hikariConfig.setSchema("master");
         hikariConfig.setUsername("postgres");
         hikariConfig.setPassword("Ghaexer610");
-        hikariConfig.setKeepaliveTime(40000);
-        hikariConfig.setMinimumIdle(1);
-        hikariConfig.setMaxLifetime(45000);
-        hikariConfig.setIdleTimeout(35000);
+        hikariConfig.setMaximumPoolSize(4);
         return new HikariDataSource(hikariConfig);
     }
 

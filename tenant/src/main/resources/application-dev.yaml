@@ -9,7 +9,7 @@ spring:
     username: postgres
     password: Ghaexer610
     hikari:
-      maximum-pool-size: 90
+      maximum-pool-size: 10
       minimum-idle: 90
   jpa:
     hibernate:

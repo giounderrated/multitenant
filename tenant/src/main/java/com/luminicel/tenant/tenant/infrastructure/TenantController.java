@@ -5,16 +5,19 @@ import com.luminicel.tenant.rest.Success;
 import com.luminicel.tenant.tenant.domain.model.Tenant;
 import com.luminicel.tenant.tenant.domain.model.TenantForm;
 import com.luminicel.tenant.tenant.domain.service.TenantService;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.HttpStatusCode;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/v1")
+@RequestMapping("/api/v1/tenants")
 public class TenantController {
-    private static final String TENANT_PATH = "/tenants";
-    private static final String TENANT_WITH_ID = "/tenants/{id}";
-    private static final String REGISTER_PATH = "/tenants/register";
+    private static final String TENANT_WITH_ID = "/{id}";
+    private static final String REGISTER_PATH = "/register";
+    private static final String TENANT_CHECK = "/check/{domain}";
 
     private final TenantService tenantService;
 
@@ -30,9 +33,18 @@ public class TenantController {
                 .build();
     }
 
-    @GetMapping(TENANT_PATH)
+    @GetMapping
     public List<Tenant> getAllTenants(){
         return tenantService.getAll();
+    }
+
+    @GetMapping(TENANT_CHECK)
+    public ResponseEntity<Boolean> checkByDomain(@PathVariable final String domain){
+        final boolean exists = tenantService.existsByDomain(domain);
+        return ResponseEntity.status(HttpStatus.OK).body(exists);
+//        return Success.<Boolean>builder()
+//                .data(exists)
+//                .build();
     }
 
 

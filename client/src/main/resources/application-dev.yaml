@@ -3,9 +3,11 @@ server:
 spring:
   autoconfigure:
     exclude: org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration
-  jpa:
-    hibernate:
-      ddl-auto: create
+management:
+  endpoints:
+    web:
+      exposure:
+        include: refresh
 #logging:
 #  level:
 #    org:

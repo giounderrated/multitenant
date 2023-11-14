@@ -1,5 +1,7 @@
 package com.luminicel.client.students;
 
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -10,24 +12,20 @@ public class StudentController {
 
     private static final String STUDENTS = "/students";
 
-    private final StudentRepository repository;
+    private final StudentService service;
 
-    public StudentController(StudentRepository repository) {
-        this.repository = repository;
+    public StudentController(final StudentService service) {
+        this.service = service;
     }
 
     @GetMapping(STUDENTS)
     public List<Student> getAll(){
-        return repository.findAll();
+        return service.getAllStudents();
     }
 
     @PostMapping(STUDENTS)
-    public String createStudent(@RequestBody final StudentForm form ){
-        final Student student = Student.builder()
-                .firstname(form.firstname())
-                .lastname(form.lastname())
-                .build();
-        repository.save(student);
-    return String.format("Student %s created",student.getFirstname());
+    public ResponseEntity<Void> createStudent(@RequestBody final StudentForm form ){
+        service.createStudent(form);
+        return ResponseEntity.status(HttpStatus.OK).build();
     }
 }

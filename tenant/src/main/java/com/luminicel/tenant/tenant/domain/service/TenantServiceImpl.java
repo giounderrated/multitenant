@@ -26,4 +26,11 @@ public class TenantServiceImpl implements TenantService{
     public List<Tenant> getAll() {
         return repository.findAll();
     }
+
+    @Override
+    public boolean existsByDomain(String domain) {
+        return repository.existsByDomain(domain);
+    }
+
+
 }

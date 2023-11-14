@@ -9,5 +9,6 @@ public interface TenantService {
     String createTenant(TenantForm tenant);
     List<Tenant> getAll();
 
+    boolean existsByDomain(String domain);
 
 }

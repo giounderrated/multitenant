@@ -1,4 +1,4 @@
-package com.luminicel.client.students;
+package com.luminicel.client.users;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -11,10 +11,15 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
-public class Student {
+@Table(name = "account")
+public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private String enrollment_id;
-    private Long userId;
+    private String firstname;
+    private String lastname;
+    private String email;
+    private String password;
+    private Role role;
+
 }
