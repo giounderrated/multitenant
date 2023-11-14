@@ -25,5 +25,6 @@ public class TenantConfig {
     private String logoUrl;
     private String themeColor;
     private String bannerUrl;
+    private String domain;
     private Long tenantId;
 }

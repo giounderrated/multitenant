@@ -22,12 +22,7 @@ public class WebSecurityConfig {
             @Override
             public void addCorsMappings(CorsRegistry registry) {
                 registry.addMapping("/**")
-                        .allowedOrigins(
-                                "http://localhost:4200",
-                                "http://localhost:4200/",
-                                "http://localhost:3000",
-                                "http://luminicel.test:4200"
-                        )
+                        .allowedOrigins("*")
                         .allowedMethods("*")
                         .allowedHeaders("*");
             }

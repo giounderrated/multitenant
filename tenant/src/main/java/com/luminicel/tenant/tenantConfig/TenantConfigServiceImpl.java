@@ -1,5 +1,6 @@
 package com.luminicel.tenant.tenantConfig;
 
+import com.luminicel.tenant.tenant.domain.model.Tenant;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -18,21 +19,22 @@ public class TenantConfigServiceImpl implements TenantConfigService{
     }
 
     @Override
-    public void createDefaultConfigForTenantWithId(Long id) {
+    public void createDefaultConfigForTenant(final Tenant tenant) {
         final TenantConfig tenantConfig = TenantConfig.builder()
-                .tenantId(id)
+                .tenantId(tenant.getId())
                 .themeColor(DEFAULT_THEME_COLOR)
                 .logoUrl(DEFAULT_LOGO)
                 .bannerUrl(DEFAULT_BANNER)
+                .domain(tenant.getDomain())
                 .build();
         repository.save(tenantConfig);
     }
 
     @Override
-    public TenantConfig getConfigWithTenantId(Long id) {
-        final TenantConfig tenantConfig = repository.findByTenantId(id).orElseThrow(
+    public TenantConfig getConfigByDomain(final String domain) {
+        final TenantConfig tenantConfig = repository.findByDomain(domain).orElseThrow(
                 ()-> new IllegalArgumentException(
-                        String.format("No tenant with id %s", id)
+                        String.format("No tenant with domain %s", domain)
                 )
         );
         return tenantConfig;

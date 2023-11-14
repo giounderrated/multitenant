@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping("/api/v1/config")
 public class TenantConfigController {
-    public static final String FOR_TENANT = "/{tenantId}";
+    public static final String FOR_TENANT = "/{domain}";
 
     private final TenantConfigService configService;
 
@@ -19,8 +19,8 @@ public class TenantConfigController {
     }
 
     @GetMapping(FOR_TENANT)
-    public JSend<TenantConfig> getConfig(@PathVariable final String tenantId){
-        final TenantConfig tenantConfig=  configService.getConfigWithTenantId(Long.valueOf(tenantId));
+    public JSend<TenantConfig> getConfig(@PathVariable("domain") final String domain){
+        final TenantConfig tenantConfig = configService.getConfigByDomain(domain);
         return Success.<TenantConfig>builder()
                 .data(tenantConfig)
                 .build();

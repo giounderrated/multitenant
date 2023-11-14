@@ -50,7 +50,7 @@ public class CreateTenant {
     }
 
     private void setDefaultConfig() {
-        configService.createDefaultConfigForTenantWithId(tenant.getId());
+        configService.createDefaultConfigForTenant(tenant);
     }
 
     private void createUserAndTenant(TenantForm form){

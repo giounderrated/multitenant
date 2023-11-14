@@ -39,7 +39,7 @@ public class TenantController {
     }
 
     @GetMapping(TENANT_CHECK)
-    public ResponseEntity<Boolean> checkByDomain(@PathVariable final String domain){
+    public ResponseEntity<Boolean> checkByDomain(@PathVariable("domain") final String domain){
         final boolean exists = tenantService.existsByDomain(domain);
         return ResponseEntity.status(HttpStatus.OK).body(exists);
 //        return Success.<Boolean>builder()
