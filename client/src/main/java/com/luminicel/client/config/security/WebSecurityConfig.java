@@ -1,4 +1,4 @@
-package com.luminicel.client.config;
+package com.luminicel.client.config.security;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -18,18 +18,12 @@ public class WebSecurityConfig {
             @Override
             public void addCorsMappings(CorsRegistry registry) {
                 registry.addMapping("/**")
-                        .allowedOrigins(
-                                "http://localhost:4200",
-                                "http://localhost:4200/",
-                                "http://localhost:3000",
-                                "http://luminicel.test:4200"
-                        )
+                        .allowedOrigins("*")
                         .allowedMethods("*")
                         .allowedHeaders("*");
             }
         };
     }
-
 
     @Bean
     @Profile("dev")

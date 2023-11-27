@@ -20,7 +20,7 @@ public class AuthController {
 
     @PostMapping(LOGIN)
     public ResponseEntity<LoginCredentials> signIn(@RequestBody LoginForm form){
-        final LoginCredentials credentials = authService.getLoginCredentials(form);
+        final LoginCredentials credentials = authService.authenticate(form);
         return ResponseEntity.status(HttpStatus.OK).body(credentials);
     }
 

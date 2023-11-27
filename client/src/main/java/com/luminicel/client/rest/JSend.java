@@ -7,5 +7,5 @@ public interface JSend<T> {
 	int getCode();
 	String getMessage();
 	T getData();
-	List<String> getStack();
+//	List<String> getStack();
 }

@@ -61,8 +61,8 @@ public class Success<T> implements JSend<T> {
 		return message;
 	}
 
-	@Override
-	public List<String> getStack() {
-		return Collections.emptyList();
-	}
+//	@Override
+//	public List<String> getStack() {
+//		return Collections.emptyList();
+//	}
 }

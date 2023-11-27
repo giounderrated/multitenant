@@ -1,4 +1,4 @@
-package com.luminicel.client.students;
+package com.luminicel.client.programTypes;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -11,11 +11,19 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
-@Table(name = "students")
-public class Student {
+@Table(name = "program_types")
+public class ProgramType {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+
     private Long id;
-    private String enrollment_id;
-    private Long userId;
+    private String name;
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public Long getId() {
+        return id;
+    }
 }

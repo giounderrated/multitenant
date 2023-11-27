@@ -41,12 +41,20 @@ public class CreateTenant {
 
     public String create(TenantForm form) {
         checkIfEmailIsRepeated(form.email());
+        checkIfDomainIsRepeated(form.domain());
         createUserAndTenant(form);
         setEmailInformation();
         setDefaultConfig();
         // TODO SendEmail
 //        tryToSendEmail();
         return getSuccessMessage();
+    }
+
+    private void checkIfDomainIsRepeated(String domain) {
+        final boolean exists = tenantRepository.existsByDomain(domain);
+        if(exists){
+            throw new IllegalArgumentException(getEmailRepeatedWarning(domain));
+        }
     }
 
     private void setDefaultConfig() {
@@ -81,6 +89,10 @@ public class CreateTenant {
 
     private String getEmailRepeatedWarning(String email) {
         return String.format("Tenant with email %s is already registered", email);
+    }
+
+    private String getDomainRepeatedWarning(String domain) {
+        return String.format("Tenant with domain %s is already domain", domain);
     }
 
 
